@@ -216,7 +216,7 @@ def iter_documents(roots: list[str], opts: ScanOptions) -> Iterator[Document]:
                 rel_dir = ""
             dirnames[:] = sorted(
                 d for d in dirnames
-                if not (opts.default_excludes and d in DEFAULT_EXCLUDE_DIRS)
+                if not (opts.default_excludes and _default_excluded_dir(d))
                 and not _excluded(norm(os.path.join(rel_dir, d)), d, opts)
             )
             for fn in sorted(filenames):
@@ -237,10 +237,15 @@ def iter_documents(roots: list[str], opts: ScanOptions) -> Iterator[Document]:
                     yield doc
 
 
+def _default_excluded_dir(name: str) -> bool:
+    """Dependency, VCS and build-artifact directories skipped unless --no-default-excludes."""
+    return name in DEFAULT_EXCLUDE_DIRS or name.endswith((".egg-info", ".dist-info"))
+
+
 def _find_skill_dirs(root: str, opts: ScanOptions) -> set[str]:
     out: set[str] = set()
     for dirpath, dirnames, filenames in os.walk(root, followlinks=opts.follow_symlinks):
-        dirnames[:] = [d for d in dirnames if not (opts.default_excludes and d in DEFAULT_EXCLUDE_DIRS)]
+        dirnames[:] = [d for d in dirnames if not (opts.default_excludes and _default_excluded_dir(d))]
         if any(f.lower() == "skill.md" for f in filenames):
             out.add(norm(dirpath))
     return out
