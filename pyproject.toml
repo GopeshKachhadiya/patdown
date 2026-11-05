@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "patdown"
+version = "0.1.0"
+description = "Frisk everything your AI agent reads: skills, rules files, hooks and MCP servers, scanned for prompt injection, hidden Unicode, exfiltration and poisoned tools."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "GopeshKachhadiya" }]
+keywords = [
+  "security", "prompt-injection", "mcp", "ai-agents", "claude-code", "cursor",
+  "copilot", "skills", "supply-chain", "unicode", "sarif", "static-analysis",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/GopeshKachhadiya/patdown"
+Repository = "https://github.com/GopeshKachhadiya/patdown"
+Issues = "https://github.com/GopeshKachhadiya/patdown/issues"
+Changelog = "https://github.com/GopeshKachhadiya/patdown/blob/main/CHANGELOG.md"
+
+[project.scripts]
+patdown = "patdown.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

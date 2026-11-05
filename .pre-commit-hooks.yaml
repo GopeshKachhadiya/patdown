@@ -1,0 +1,8 @@
+- id: patdown
+  name: patdown (scan AI-agent config for injection/exfil/hidden content)
+  description: Frisk skills, rules files, hooks and MCP config for prompt injection, hidden Unicode, exfiltration and poisoned tools.
+  entry: patdown scan
+  language: python
+  types: [text]
+  pass_filenames: true
+  require_serial: false

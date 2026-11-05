@@ -1,0 +1,20 @@
+name: patdown
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan agent config for injection / exfil / hidden content
+        uses: ./   # on your own repo use: GopeshKachhadiya/patdown@v1
+        with:
+          # examples/ and tests/ hold intentionally-malicious fixtures, so they
+          # are excluded here. On your repo, drop the excludes and scan it all.
+          args: --fail-on high --exclude examples --exclude tests

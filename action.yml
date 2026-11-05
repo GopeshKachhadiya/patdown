@@ -1,0 +1,50 @@
+name: "patdown"
+description: "Scan AI-agent config (skills, rules files, hooks, MCP servers) for prompt injection, hidden Unicode, exfiltration and poisoned tools."
+author: "patdown contributors"
+branding:
+  icon: "shield"
+  color: "purple"
+inputs:
+  args:
+    description: "Arguments passed to patdown (e.g. '--fail-on high ./path'). Default scans the whole workspace."
+    required: false
+    default: "."
+  path:
+    description: "Deprecated alias; prefer putting the path in `args`."
+    required: false
+    default: ""
+  sarif-file:
+    description: "Where to write the SARIF report inside the workspace."
+    required: false
+    default: "patdown.sarif"
+  upload-sarif:
+    description: "Upload the SARIF report to GitHub code scanning (needs security-events: write)."
+    required: false
+    default: "true"
+  version:
+    description: "patdown version spec to install (e.g. '==0.1.0'). Default installs the latest release."
+    required: false
+    default: ""
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install patdown
+      shell: bash
+      run: python -m pip install --disable-pip-version-check "patdown${{ inputs.version }}"
+    - name: Run patdown (SARIF)
+      shell: bash
+      run: patdown scan ${{ inputs.path }} ${{ inputs.args }} --sarif -o "${{ inputs.sarif-file }}" || true
+    - name: Upload SARIF
+      if: ${{ inputs.upload-sarif == 'true' }}
+      uses: github/codeql-action/upload-sarif@v3
+      continue-on-error: true
+      with:
+        sarif_file: ${{ inputs.sarif-file }}
+        category: patdown
+    - name: Enforce threshold
+      shell: bash
+      run: patdown scan ${{ inputs.path }} ${{ inputs.args }} --quiet
