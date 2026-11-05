@@ -4,8 +4,8 @@
 **Frisk everything your AI coding agent reads — before it reads it.**
 
 [![CI](https://github.com/GopeshKachhadiya/patdown/actions/workflows/ci.yml/badge.svg)](https://github.com/GopeshKachhadiya/patdown/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/patdown.svg)](https://pypi.org/project/patdown/)
-[![Python](https://img.shields.io/pypi/pyversions/patdown.svg)](https://pypi.org/project/patdown/)
+[![Release](https://img.shields.io/github/v/release/GopeshKachhadiya/patdown?display_name=tag)](https://github.com/GopeshKachhadiya/patdown/releases/latest)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Your agent (Claude Code, Cursor, Copilot, Codex, Windsurf, Gemini CLI, …) treats a pile of files as *instructions*: `CLAUDE.md`, `.cursorrules`, `AGENTS.md`, skills, slash commands, hook configs, and every MCP server's tool descriptions. You `git clone` a repo, open it in your agent, and all of that is now in your model's context — running with your shell, your tokens, and your filesystem.
@@ -25,8 +25,10 @@ Zero dependencies. One file in, findings out. Runs in well under a second on a t
 
 ## Quick start
 
+Install straight from GitHub (patdown has no dependencies, so this is instant):
+
 ```bash
-pip install patdown
+pip install "git+https://github.com/GopeshKachhadiya/patdown@v1"
 ```
 
 ```bash
@@ -46,8 +48,10 @@ patdown --home
 No install, just try it:
 
 ```bash
-pipx run patdown
+pipx run --spec "git+https://github.com/GopeshKachhadiya/patdown@v1" patdown
 ```
+
+A PyPI release (`pip install patdown`) is not published yet; the GitHub Action and pre-commit hook below do not need one.
 
 ---
 
