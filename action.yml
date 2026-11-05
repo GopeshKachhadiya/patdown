@@ -22,7 +22,7 @@ inputs:
     required: false
     default: "true"
   version:
-    description: "patdown version spec to install (e.g. '==0.1.0'). Default installs the latest release."
+    description: "patdown version spec to install from PyPI (e.g. '==0.1.0'). Leave blank to install the exact patdown bundled with this action ref (no PyPI needed)."
     required: false
     default: ""
 runs:
@@ -34,7 +34,12 @@ runs:
         python-version: "3.12"
     - name: Install patdown
       shell: bash
-      run: python -m pip install --disable-pip-version-check "patdown${{ inputs.version }}"
+      run: |
+        if [ -n "${{ inputs.version }}" ]; then
+          python -m pip install --disable-pip-version-check "patdown${{ inputs.version }}"
+        else
+          python -m pip install --disable-pip-version-check "${{ github.action_path }}"
+        fi
     - name: Run patdown (SARIF)
       shell: bash
       run: patdown scan ${{ inputs.path }} ${{ inputs.args }} --sarif -o "${{ inputs.sarif-file }}" || true
